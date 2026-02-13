@@ -1,0 +1,20 @@
+<template>
+  <div>{{ text }}</div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+
+export default class TestErrorComponent extends Component {
+  initData() {
+    return { text: 'Test Error' };
+  }
+}
+</script>
+
+<style module lang="less">
+.error {
+  color: red;
+  font-weight: bold;
+}
+</style>

@@ -1,0 +1,23 @@
+<template>
+    <div>
+        <h1>{{ title }}</h1>
+        <comp />
+    </div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+import Comp from './comp.san';
+
+export default class ImportComponent extends Component {
+    static components = {
+        comp: Comp
+    };
+
+    initData() {
+        return {
+            title: 'Import Test'
+        };
+    }
+}
+</script>

@@ -1,0 +1,28 @@
+
+<template>
+  <div>{{ text }}</div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+
+export default class TestComponent extends Component {
+  initData() {
+    return { text: 'Test' };
+  }
+}
+</script>
+
+<style module lang="less">
+.test {
+  color: red;
+  background: yellow;
+}
+</style>
+
+<style module="tools">
+.button {
+  background: blue;
+  color: white;
+}
+</style>

@@ -1,0 +1,19 @@
+<template>
+    <div>
+        <h1>{{ title }}</h1>
+        <p>{{ content }}</p>
+    </div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+
+export default class AppComponent extends Component {
+    initData() {
+        return {
+            title: 'Default Title',
+            content: 'Default Content'
+        };
+    }
+}
+</script>

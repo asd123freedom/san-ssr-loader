@@ -1,0 +1,9 @@
+<template>
+    <div>我是子组件</div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+
+export default class CompComponent extends Component {}
+</script>

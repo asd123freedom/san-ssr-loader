@@ -1,0 +1,24 @@
+<template>
+    <div>
+        <h1>{{ title }}</h1>
+        <ul>
+            <li s-for="item in list">{{ item }}</li>
+        </ul>
+        <p s-if="showMessage">显示消息</p>
+        <p s-else>隐藏消息</p>
+    </div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+
+export default class RenderComponent extends Component {
+    initData() {
+        return {
+            title: 'Render Test',
+            list: ['Item 1', 'Item 2', 'Item 3'],
+            showMessage: true
+        };
+    }
+}
+</script>

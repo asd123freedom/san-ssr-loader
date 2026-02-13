@@ -1,0 +1,9 @@
+<template>
+    <div>JavaScript Component</div>
+</template>
+
+<script>
+import { Component } from 'san';
+
+export default class JSComponent extends Component {}
+</script>

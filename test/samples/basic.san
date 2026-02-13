@@ -1,0 +1,15 @@
+<template>
+    <div>{{ message }}</div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+
+export default class BasicComponent extends Component {
+    initData() {
+        return {
+            message: 'Hello World'
+        };
+    }
+}
+</script>

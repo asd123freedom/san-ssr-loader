@@ -1,0 +1,37 @@
+{
+  "name": "san-ssr-loader-example",
+  "version": "1.0.0",
+  "description": "Example usage of san-ssr-loader",
+  "main": "dist/bundle.js",
+  "tppe": "module",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "dev": "node -e \"const { render } = require('./dist/bundle'); console.log(render())\"",
+    "start": "npm run build && npm run dev"
+  },
+  "dependencies": {
+    "loader-utils": "^3.3.1",
+    "san": "~3.11.3",
+    "san-ssr": "^3.13.3",
+    "san-ssr-plugin": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.15",
+    "@babel/preset-env": "^7.22.15",
+    "@babel/preset-typescript": "^7.22.15",
+    "babel-loader": "^8.3.0",
+    "css-loader": "^6.8.1",
+    "html-loader": "^4.2.0",
+    "less": "^3.13.1",
+    "less-loader": "^7.3.0",
+    "san-loader": "^0.3.7",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^4.10.0"
+  },
+  "peerDependencies": {
+    "san-ssr-loader": "file:.."
+  }
+}

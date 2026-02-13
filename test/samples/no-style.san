@@ -1,0 +1,9 @@
+<template>
+    <div>No style component</div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+
+export default class NoStyleComponent extends Component {}
+</script>

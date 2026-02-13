@@ -1,0 +1,36 @@
+<template>
+    <div class="{{ $style.container }}">
+        <span class="{{ $style.title }}">{{ title }}</span>
+    </div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+
+export default class StyleComponent extends Component {
+    initData() {
+        return {
+            title: 'Styled Component'
+        };
+    }
+}
+</script>
+
+<style module lang="less">
+.container {
+    padding: 10px;
+    background: #f5f5f5;
+}
+
+.title {
+    color: #333;
+    font-size: 18px;
+}
+</style>
+
+<style module="tools">
+.button {
+    background: blue;
+    color: white;
+}
+</style>

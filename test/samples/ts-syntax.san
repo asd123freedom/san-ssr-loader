@@ -1,0 +1,23 @@
+<template>
+    <div>{{ info.title }}</div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+
+interface Info {
+    title: string;
+    description: string;
+}
+
+export default class TypeScriptComponent extends Component {
+    initData() {
+        const info: Info = {
+            title: 'TypeScript Test',
+            description: 'Test TypeScript support'
+        };
+
+        return { info };
+    }
+}
+</script>

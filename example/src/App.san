@@ -1,0 +1,40 @@
+<template>
+    <div>
+        <h1>{{ title }}</h1>
+        <p>{{ content }}</p>
+        <div class="{{ $style.container }}">
+            <span class="{{ $style.text }}">This is a styled component</span>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+import { Component } from 'san';
+
+interface AppData {
+    title: string;
+    content: string;
+}
+
+export default class App extends Component {
+    initData(): AppData {
+        return {
+            title: 'Welcome to San SSR',
+            content: 'This is a server-side rendered component using San SSR'
+        };
+    }
+}
+</script>
+
+<style module lang="less">
+.container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.text {
+    color: #333;
+    font-size: 16px;
+}
+</style>

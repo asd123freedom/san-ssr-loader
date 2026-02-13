@@ -1,25 +1,58 @@
-# san-ssr-loader
+const path = require('path');
+const loaderUtils = require('loader-utils');
+const mode = 'production';
 
-webpack loader for san single-file components (SFC)
-
-## Background
-
-本仓库借鉴了 [san-ssr-plugin](https://github.com/searchfe/san-ssr-plugin) 的代码结构和功能实现，专门为 San 组件提供服务器端渲染支持。
-
-## Installation
-
-```bash
-npm install san-ssr-loader --save-dev
-```
-
-## Usage
-
-### webpack Configuration
-
-```javascript
 module.exports = {
+    entry: {
+        app: './src/index.ts',
+    },
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+        libraryTarget: 'commonjs2',
+        clean: true,
+    },
+    devtool: 'source-map',
+    mode,
+    target: 'node',
+    resolveLoader: {
+        extensions: ['.ts', '.js'], // 允许 loader 自动补全 .ts 后缀
+    },
     module: {
         rules: [
+            {
+                test: /html-parser\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                        ],
+                        plugins: [
+                            '@babel/plugin-proposal-class-properties',
+                        ],
+                        sourceMaps: true,
+                    },
+                },
+            },
+            {
+                test: /\.ts$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                            '@babel/preset-typescript',
+                        ],
+                        plugins: [
+                            '@babel/plugin-proposal-class-properties',
+                        ],
+                        sourceMaps: true,
+                    },
+                },
+            },
             // 专门处理带有 type=style 参数的 .san 文件请求
             {
                 test: /\.san$/,
@@ -30,23 +63,24 @@ module.exports = {
                         resourceQuery: /module.*lang=less|lang=less.*module/,
                         use: [
                             {
-                                loader: "css-loader",
+                                loader: 'css-loader',
                                 options: {
                                     esModule: false,
                                     modules: {
-                                        exportLocalsConvention: "camelCase",
+                                        localIdentName: '[local]-[hash:base64:8]',
+                                        exportLocalsConvention: 'camelCase',
                                         namedExport: false,
                                     },
                                     sourceMap: true,
                                 },
                             },
                             {
-                                loader: "less-loader",
+                                loader: 'less-loader',
                                 options: {
                                     sourceMap: true,
                                     lessOptions: {
                                         paths: [
-                                            path.resolve(__dirname, "node_modules"),
+                                            path.resolve(__dirname, 'node_modules'),
                                         ],
                                     },
                                 },
@@ -58,19 +92,19 @@ module.exports = {
                         resourceQuery: /lang=less/,
                         use: [
                             {
-                                loader: "css-loader",
+                                loader: 'css-loader',
                                 options: {
                                     esModule: false,
                                     sourceMap: true,
                                 },
                             },
                             {
-                                loader: "less-loader",
+                                loader: 'less-loader',
                                 options: {
                                     sourceMap: true,
                                     lessOptions: {
                                         paths: [
-                                            path.resolve(__dirname, "node_modules"),
+                                            path.resolve(__dirname, 'node_modules'),
                                         ],
                                     },
                                 },
@@ -82,11 +116,11 @@ module.exports = {
                         resourceQuery: /module/,
                         use: [
                             {
-                                loader: "css-loader",
+                                loader: 'css-loader',
                                 options: {
                                     esModule: false,
                                     modules: {
-                                        exportLocalsConvention: "camelCase",
+                                        exportLocalsConvention: 'camelCase',
                                         namedExport: false,
                                     },
                                     sourceMap: true,
@@ -94,16 +128,16 @@ module.exports = {
                             },
                         ],
                     },
-                    // 默认处理 CSS 样式（始终启用 modules）
+                    // 默认处理 CSS 样式
                     {
                         use: [
                             {
-                                loader: "css-loader",
+                                loader: 'css-loader',
                                 options: {
                                     esModule: false,
                                     sourceMap: true,
                                 },
-                            }
+                            },
                         ],
                     },
                 ],
@@ -112,8 +146,19 @@ module.exports = {
             {
                 test: /\.san$/,
                 use: {
-                    loader: 'san-ssr-loader',
-                    options,
+                    loader: path.resolve(__dirname, '../dist/index.js'),
+                    options: {
+                        tsConfigPath: './tsconfig.json',
+                        sanSsrOptions: {
+                            ssrOnly: true,
+                        },
+                        styleOptions: {
+                            modules: true,
+                        },
+                        templateOptions: {
+                            compileTemplate: 'aPack',
+                        },
+                    },
                 },
             },
             // 处理其他样式文件
@@ -125,26 +170,23 @@ module.exports = {
                         resourceQuery: /module/,
                         use: [
                             {
-                                loader: "css-loader",
+                                loader: 'css-loader',
                                 options: {
                                     esModule: false,
                                     modules: {
-                                        exportLocalsConvention: "camelCase",
+                                        exportLocalsConvention: 'camelCase',
                                         namedExport: false,
                                     },
                                     sourceMap: true,
                                 },
                             },
                             {
-                                loader: "less-loader",
+                                loader: 'less-loader',
                                 options: {
                                     sourceMap: true,
                                     lessOptions: {
                                         paths: [
-                                            path.resolve(
-                                                __dirname,
-                                                "node_modules",
-                                            ),
+                                            path.resolve(__dirname, 'node_modules'),
                                         ],
                                     },
                                 },
@@ -155,22 +197,19 @@ module.exports = {
                     {
                         use: [
                             {
-                                loader: "css-loader",
+                                loader: 'css-loader',
                                 options: {
                                     esModule: false,
                                     sourceMap: true,
                                 },
                             },
                             {
-                                loader: "less-loader",
+                                loader: 'less-loader',
                                 options: {
                                     sourceMap: true,
                                     lessOptions: {
                                         paths: [
-                                            path.resolve(
-                                                __dirname,
-                                                "node_modules",
-                                            ),
+                                            path.resolve(__dirname, 'node_modules'),
                                         ],
                                     },
                                 },
@@ -181,170 +220,65 @@ module.exports = {
             },
             {
                 test: /\.ts$/,
-                exclude: /(node_modules)/,
+                exclude: /(node_modules|bower_components)/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
                         presets: [
-                            "@babel/preset-env",
-                            "@babel/preset-typescript",
+                            '@babel/preset-env',
+                            '@babel/preset-typescript',
                         ],
                         plugins: [
-                            ["@babel/plugin-proposal-class-properties"],
+                            ['@babel/plugin-proposal-class-properties'],
                         ],
                     },
                 },
             },
             {
                 test: /\.js$/,
-                exclude: /(node_modules)/,
+                exclude: /(node_modules|bower_components)/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
-                        presets: ["@babel/preset-env"],
+                        presets: ['@babel/preset-env'],
                         plugins: [
-                            ["@babel/plugin-proposal-class-properties"],
+                            ['@babel/plugin-proposal-class-properties'],
                         ],
                     },
                 },
             },
             {
                 test: /\.html$/,
-                loader: "html-loader",
+                loader: 'html-loader',
                 options: {
                     esModule: false,
                     minimize: false,
                     sources: false,
                 },
             },
+            {
+                test: /\.(png|jpe?g|gif|svg)$/i,
+                type: 'asset/inline',
+            },
         ],
     },
+    resolve: {
+        extensions: ['.js', '.ts', '.san', '.json'],
+        modules: ['node_modules', path.resolve(__dirname, '../src')],
+        alias: {
+            '@': path.resolve(__dirname, '../src'),
+        },
+    },
+    // 禁用一些 webpack 优化以便于测试
+    optimization: {
+        minimize: false,
+        moduleIds: 'named',
+    },
+    stats: {
+        errorDetails: true,
+    },
+    externals: {
+        // 外部化 san 依赖，避免打包到 bundle 中
+        san: 'san',
+    },
 };
-```
-
-### San Single-File Component
-
-```html
-<template>
-    <div class="{{ $style.container }}">
-        <span class="{{ $style.text }}">This is a styled component</span>
-    </div>
-</template>
-
-<script lang="ts">
-    import { Component } from "san";
-
-    export default class App extends Component {
-        initData() {
-            return {
-                title: "Welcome to San SSR",
-            };
-        }
-    }
-</script>
-
-<style module>
-    .container {
-        background-color: #f0f0f0;
-        padding: 20px;
-        border-radius: 8px;
-    }
-
-    .text {
-        color: #333;
-        font-size: 16px;
-    }
-</style>
-```
-
-### Rendering Component
-
-```typescript
-import App from "./App.san";
-
-export function render(data: { [key: string]: any } = {}) {
-    if (App.sanSSRRenders && App.sanSSRRenders.default) {
-        return App.sanSSRRenders.default(data);
-    } else {
-        console.error("Component does not have sanSSRRenders property");
-        return "";
-    }
-}
-```
-
-## Options
-
-### tsConfigPath
-
-Path to TypeScript configuration file (default: automatically finds tsconfig.json in parent directories)
-
-### sanSsrOptions
-
-Options for san-ssr compiler (see [san-ssr documentation](https://github.com/baidu/san-ssr))
-
-### styleOptions
-
-Options for style processing:
-
-- `modules: boolean`: Enable CSS Modules by default (default: false)
-
-### templateOptions
-
-Options for template processing:
-
-- `compileTemplate: string`: Template compiler type (aPack or babel, default: aPack)
-
-### appendRenderFunction
-
-Custom render function append content. Use this to override default style handling logic.
-
-```typescript
-type AppendRenderFunction = (
-    styleId: string,
-    css?: string,
-    locals?: Record<string, string>,
-    namedModuleCss?: Array<{
-        name: string;
-        css?: string;
-        locals?: Record<string, string>;
-    }>,
-) => string;
-```
-
-## Features
-
-- **TypeScript 支持**：完整支持 TypeScript 语法和类型检查
-- **CSS Modules 支持**：内置对 CSS Modules 的支持，可通过配置启用
-- **样式预处理器支持**：支持 Less、SCSS 等预处理器
-- **Webpack 深度集成**：完全融入 webpack 模块系统，支持 Tree Shaking 和代码优化
-- **服务器端渲染**：生成可在服务器端渲染的组件
-- **样式处理机制**：创新的双重执行机制，确保样式能够通过完整的 webpack loader 链处理
-- **模板编译**：支持 aPack 和 babel 两种模板编译方式
-- **兼容性**：兼容 webpack 4 和 5
-- **调试友好**：支持 SourceMap 和调试工具集成
-
-## Example
-
-本项目包含一个完整的示例，展示如何使用 san-ssr-loader 进行开发和测试。
-
-### 运行示例
-
-1. 安装依赖：
-
-    ```bash
-    cd example
-    npm install
-    ```
-
-2. 构建项目：
-
-    ```bash
-    npm run build
-    ```
-
-3. 运行示例：
-    ```bash
-    npm run dev
-    ```
-
-示例代码位于 `example/src/` 目录中，包含一个简单的 San 组件和测试文件。运行 `npm run dev` 会构建并运行该示例，输出渲染后的 HTML。
