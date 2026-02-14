@@ -72,17 +72,7 @@ export default function (
         // 等待样式加载完成
         Promise.all(stylePromises)
             .then((styles) => {
-                console.log('=== All Styles Processed ===');
-                console.log(`  Total styles processed: ${styles.length}`);
-                styles.forEach((result, index) => {
-                    console.log(`  Style ${index} result: ${result.name}`);
-                    console.log(`    CSS code length: ${result.cssCode.length}`);
-                    console.log(`    Locals:`, result.locals);
-                });
-
                 // 调用 san-ssr 编译
-                console.log('=== Calling San SSR ===');
-                console.log('Styles array structure:', JSON.stringify(styles, null, 2));
                 const jsRes = callSanSsr(
                     {
                         path: this.resourcePath,

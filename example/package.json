@@ -24,6 +24,7 @@
     "html-loader": "^4.2.0",
     "less": "^3.13.1",
     "less-loader": "^7.3.0",
+    "mini-css-extract-plugin": "^2.10.0",
     "san-loader": "^0.3.7",
     "style-loader": "^2.0.0",
     "ts-loader": "^9.5.4",

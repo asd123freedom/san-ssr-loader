@@ -97,7 +97,12 @@ export interface SFCDescriptor {
     script: SFCBlock | undefined;
     styles: SFCBlock[];
     customBlocks: SFCBlock[];
-    errors: string[];
+    errors?: string[];
+    source?: string;
+    filename?: string;
+    scriptSetup?: SFCBlock;
+    cssVars?: any[];
+    shouldForceReload?: () => boolean;
 }
 
 export interface ASTAttr {

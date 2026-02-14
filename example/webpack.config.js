@@ -1,5 +1,5 @@
 const path = require('path');
-const loaderUtils = require('loader-utils');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const mode = 'production';
 
 module.exports = {
@@ -62,16 +62,18 @@ module.exports = {
                     {
                         resourceQuery: /module.*lang=less|lang=less.*module/,
                         use: [
+                            // 不要使用 MiniCssExtractPlugin.loader，因为 SSR 需要 CSS 内容嵌入在 JS 中
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     modules: {
                                         localIdentName: '[local]-[hash:base64:8]',
-                                        exportLocalsConvention: 'camelCase',
-                                        namedExport: false,
+                                        exportLocalsConvention: 'camelCaseOnly', // 为了兼容 namedExport: true
+                                        namedExport: true,
                                     },
                                     sourceMap: true,
+                                    exportType: 'string',
                                 },
                             },
                             {
@@ -91,11 +93,13 @@ module.exports = {
                     {
                         resourceQuery: /lang=less/,
                         use: [
+                            // 不要使用 MiniCssExtractPlugin.loader，因为 SSR 需要 CSS 内容嵌入在 JS 中
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     sourceMap: true,
+                                    exportType: 'string',
                                 },
                             },
                             {
@@ -115,13 +119,14 @@ module.exports = {
                     {
                         resourceQuery: /module/,
                         use: [
+                            // 不要使用 MiniCssExtractPlugin.loader，因为 SSR 需要 CSS 内容嵌入在 JS 中
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     modules: {
-                                        exportLocalsConvention: 'camelCase',
-                                        namedExport: false,
+                                        exportLocalsConvention: 'camelCaseOnly',
+                                        namedExport: true,
                                     },
                                     sourceMap: true,
                                 },
@@ -131,11 +136,13 @@ module.exports = {
                     // 默认处理 CSS 样式
                     {
                         use: [
+                            // 不要使用 MiniCssExtractPlugin.loader，因为 SSR 需要 CSS 内容嵌入在 JS 中
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     sourceMap: true,
+                                    exportType: 'string',
                                 },
                             },
                         ],
@@ -172,10 +179,10 @@ module.exports = {
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     modules: {
-                                        exportLocalsConvention: 'camelCase',
-                                        namedExport: false,
+                                        exportLocalsConvention: 'camelCaseOnly',
+                                        namedExport: true,
                                     },
                                     sourceMap: true,
                                 },
@@ -196,11 +203,13 @@ module.exports = {
                     // 匹配普通样式文件
                     {
                         use: [
+                            MiniCssExtractPlugin.loader,
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     sourceMap: true,
+                                    exportType: 'string',
                                 },
                             },
                             {
@@ -251,7 +260,7 @@ module.exports = {
                 test: /\.html$/,
                 loader: 'html-loader',
                 options: {
-                    esModule: false,
+                    esModule: true,
                     minimize: false,
                     sources: false,
                 },
@@ -280,5 +289,5 @@ module.exports = {
     externals: {
         // 外部化 san 依赖，避免打包到 bundle 中
         san: 'san',
-    },
+    }
 };

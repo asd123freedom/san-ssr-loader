@@ -100,10 +100,10 @@ export function getConfig(
                                 {
                                     loader: "css-loader",
                                     options: {
-                                        esModule: false,
+                                        esModule: true,
                                         modules: {
-                                            exportLocalsConvention: "camelCase",
-                                            namedExport: false,
+                                            exportLocalsConvention: "camelCaseOnly",
+                                            namedExport: true,
                                         },
                                         sourceMap: true,
                                     },
@@ -128,7 +128,7 @@ export function getConfig(
                                 {
                                     loader: "css-loader",
                                     options: {
-                                        esModule: false,
+                                        esModule: true,
                                         sourceMap: true,
                                     },
                                 },
@@ -152,10 +152,10 @@ export function getConfig(
                                 {
                                     loader: "css-loader",
                                     options: {
-                                        esModule: false,
+                                        esModule: true,
                                         modules: {
-                                            exportLocalsConvention: "camelCase",
-                                            namedExport: false,
+                                            exportLocalsConvention: "camelCaseOnly",
+                                            namedExport: true,
                                         },
                                         sourceMap: true,
                                     },
@@ -168,7 +168,7 @@ export function getConfig(
                                 {
                                     loader: "css-loader",
                                     options: {
-                                        esModule: false,
+                                        esModule: true,
                                         sourceMap: true,
                                     },
                                 }
@@ -195,10 +195,10 @@ export function getConfig(
                                 {
                                     loader: "css-loader",
                                     options: {
-                                        esModule: false,
+                                        esModule: true,
                                         modules: {
-                                            exportLocalsConvention: "camelCase",
-                                            namedExport: false,
+                                            exportLocalsConvention: "camelCaseOnly",
+                                            namedExport: true,
                                         },
                                         sourceMap: true,
                                     },
@@ -225,7 +225,7 @@ export function getConfig(
                                 {
                                     loader: "css-loader",
                                     options: {
-                                        esModule: false,
+                                        esModule: true,
                                         sourceMap: true,
                                     },
                                 },
@@ -280,7 +280,7 @@ export function getConfig(
                     test: /\.html$/,
                     loader: "html-loader",
                     options: {
-                        esModule: false,
+                        esModule: true,
                         minimize: false,
                         sources: false,
                     },

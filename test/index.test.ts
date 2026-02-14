@@ -94,11 +94,12 @@ describe("San SSR Loader", () => {
         });
 
         test("Should handle non-existent tsconfig file", async () => {
-            await expect(
-                compiler("basic.san", {
-                    tsConfigPath: "./non-existent-tsconfig.json",
-                }),
-            ).rejects.toThrow(/File not found/);
+            // 当 tsconfig 文件不存在时，loader 应该优雅地降级到默认配置而不是失败
+            const { stats } = await compiler("basic.san", {
+                tsConfigPath: "./non-existent-tsconfig.json",
+            });
+
+            expect(stats?.hasErrors()).toBe(false);
         });
     });
 

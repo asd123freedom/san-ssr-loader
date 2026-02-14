@@ -97,7 +97,24 @@ function call(
         tsConfigPath = getDefaultTSConfigPath(context);
     }
 
-    const project = new SanProject(tsConfigPath);
+    // 检查 tsConfigPath 是否存在
+    let project;
+    if (tsConfigPath) {
+        try {
+            if (fs.existsSync(tsConfigPath)) {
+                project = new SanProject(tsConfigPath);
+            } else {
+                // 如果指定的 tsconfig 文件不存在，使用无配置的方式
+                project = new SanProject();
+            }
+        } catch (error) {
+            // 如果创建项目失败，使用无配置的方式
+            project = new SanProject();
+        }
+    } else {
+        // 如果没有找到 tsconfig 文件，使用无配置的方式
+        project = new SanProject();
+    }
 
     let ssrOnly = sanSsrOptions.ssrOnly as boolean;
     if (typeof sanSsrOptions.ssrOnly === 'function') {

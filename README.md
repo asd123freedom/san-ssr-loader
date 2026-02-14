@@ -32,10 +32,10 @@ module.exports = {
                             {
                                 loader: "css-loader",
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     modules: {
-                                        exportLocalsConvention: "camelCase",
-                                        namedExport: false,
+                                        exportLocalsConvention: "camelCaseOnly",
+                                        namedExport: true,
                                     },
                                     sourceMap: true,
                                 },
@@ -60,7 +60,7 @@ module.exports = {
                             {
                                 loader: "css-loader",
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     sourceMap: true,
                                 },
                             },
@@ -84,23 +84,23 @@ module.exports = {
                             {
                                 loader: "css-loader",
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     modules: {
-                                        exportLocalsConvention: "camelCase",
-                                        namedExport: false,
+                                        exportLocalsConvention: "camelCaseOnly",
+                                        namedExport: true,
                                     },
                                     sourceMap: true,
                                 },
                             },
                         ],
                     },
-                    // 默认处理 CSS 样式（始终启用 modules）
+                    // 默认处理 CSS 样式
                     {
                         use: [
                             {
                                 loader: "css-loader",
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     sourceMap: true,
                                 },
                             }
@@ -127,10 +127,10 @@ module.exports = {
                             {
                                 loader: "css-loader",
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     modules: {
-                                        exportLocalsConvention: "camelCase",
-                                        namedExport: false,
+                                        exportLocalsConvention: "camelCaseOnly",
+                                        namedExport: true,
                                     },
                                     sourceMap: true,
                                 },
@@ -157,7 +157,7 @@ module.exports = {
                             {
                                 loader: "css-loader",
                                 options: {
-                                    esModule: false,
+                                    esModule: true,
                                     sourceMap: true,
                                 },
                             },
@@ -212,7 +212,7 @@ module.exports = {
                 test: /\.html$/,
                 loader: "html-loader",
                 options: {
-                    esModule: false,
+                    esModule: true,
                     minimize: false,
                     sources: false,
                 },
@@ -272,6 +272,32 @@ export function render(data: { [key: string]: any } = {}) {
 }
 ```
 
+## 样式处理配置
+
+### css-loader 配置说明
+
+我们推荐使用以下 css-loader 配置以获得最佳体验：
+
+```javascript
+{
+    loader: "css-loader",
+    options: {
+        esModule: true,
+        modules: {
+            exportLocalsConvention: "camelCaseOnly",
+            namedExport: true,
+        },
+        sourceMap: true,
+    },
+}
+```
+
+**为什么选择 `esModule: true` 和 `namedExport: true`？**
+
+1. **现代化模块系统支持**：输出符合 ES 模块规范的代码
+2. **直接模块导入**：通过 `context.importModule` 可以直接获取模块导出对象
+4. **更好的类型支持**：与 TypeScript 配合更友好
+
 ## Options
 
 ### tsConfigPath
@@ -314,13 +340,12 @@ type AppendRenderFunction = (
 ## Features
 
 - **TypeScript 支持**：完整支持 TypeScript 语法和类型检查
-- **CSS Modules 支持**：内置对 CSS Modules 的支持，可通过配置启用
+- **CSS Modules 支持**：内置对 CSS Modules 的支持，使用 `esModule: true` 和 `namedExport: true` 配置
 - **样式预处理器支持**：支持 Less、SCSS 等预处理器
 - **Webpack 深度集成**：完全融入 webpack 模块系统，支持 Tree Shaking 和代码优化
 - **服务器端渲染**：生成可在服务器端渲染的组件
-- **样式处理机制**：创新的双重执行机制，确保样式能够通过完整的 webpack loader 链处理
+- **样式处理机制**：使用 webpack 5 的 `context.importModule` 直接导入模块
 - **模板编译**：支持 aPack 和 babel 两种模板编译方式
-- **兼容性**：兼容 webpack 4 和 5
 - **调试友好**：支持 SourceMap 和调试工具集成
 
 ## Example
